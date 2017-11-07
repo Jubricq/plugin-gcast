@@ -99,28 +99,28 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 }
 ?>
          </div>
-       </div>
-       <div class="form-group">
+  </div>
+  <div class="form-group">
         <label class="col-sm-3 control-label"></label>
         <div class="col-sm-9">
           <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isEnable" checked/>{{Activer}}</label>
           <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
         </div>
-      </div>
-      <div class="form-group">
+  </div>
+  <div class="form-group">
         <label class="col-lg-3 control-label">{{Adresse IP}}</label>
         <div class="col-lg-4">
           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="addr" placeholder="{{Adresse IP}}"/>
         </div>
-      </div>
-	  <div class="form-group">
+  </div>
+	<div class="form-group">
     <label class="col-lg-3 control-label">{{URL de retour}}</label>
     <div class="alert alert-warning col-lg-6">
         <span><?php echo network::getNetworkAccess('external') . '/plugins/gcast/core/php/gcastApi.php?apikey=' . config::byKey('api', 'gcast') . '&id=#ID_EQUIPEMENT#&query=XXXX';?></span>
     </div>
 	</div>
 	<div class="form-group">
-	<label class="col-lg-3 control-label">{{Moteur TTS:}}</label>
+	  <label class="col-lg-3 control-label">{{Moteur TTS:}}</label>
                     		<div class="col-lg-3">
                         	<select id="moteurtts" class="form-control eqLogicAttr" data-l1key="configuration" data-l2key="moteurtts" onchange="if(this.selectedIndex == 0){ document.getElementById('optionpico').style.display = 'block';document.getElementById('optiongoogle').style.display = 'none'}
 						else { document.getElementById('optionpico').style.display = 'none'; document.getElementById('optiongoogle').style.display = 'block'}">
@@ -195,7 +195,13 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 							</select>
                     		</div>
                      </div>
-	</div>
+	    </div>
+      <div class="form-group">
+        <label class="col-lg-3 control-label">{{Son prédéfini}}</label>
+        <div class="col-lg-3">
+            <span><?php config::byKey('listValue', 'gcast') ?></span>
+        </div>
+      </div>
     </fieldset>
   </form>
 </div>

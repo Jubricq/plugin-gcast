@@ -47,6 +47,26 @@ def volume():
     (out, err) = proc.communicate()
     return out
 
+def joue():
+    cachepath=os.path.abspath(os.path.join(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tmp'), 'cache'))
+    # sys.argv[1] action joue/volume 
+    # sys.argv[2] deviceIP
+    # sys.argv[3] text ou vol ou fichier
+    # sys.argv[4] web dir
+    file = sys.argv[3];
+    
+    urltoplay=sys.argv[4]+'/plugins/gcast/tmp/cache/'+file+'.mp3'
+    #file = hashlib.md5(sys.argv[3]+sys.argv[5]+sys.argv[6]).hexdigest()
+    filenamemp3=os.path.join(cachepath,file+'.mp3')
+
+    scriptdir=os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)),'caster'),'stream2chromecast.py')
+    generalparams = ' -devicename ' + sys.argv[2] + ' ' + filenamemp3 
+    cmd = 'sudo /usr/bin/python ' +scriptdir + generalparams
+    print cmd
+    proc = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
+    return out
+    
 def parle():
     cachepath=os.path.abspath(os.path.join(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tmp'), 'cache'))
     tmppath=os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'tmp'))
@@ -90,6 +110,7 @@ actions = {
            "pause" : pause,
            "volup" : volup,
            "voldown" : voldown,
+           "joue" : joue,
            "parle" : parle,
            "volume" : volume,
 }

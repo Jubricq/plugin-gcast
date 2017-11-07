@@ -43,6 +43,21 @@ class gcast extends eqLogic {
 		$parle->setDisplay('title_disable', 1);
 		$parle->setDisplay('message_placeholder', __('Phrase', __FILE__));
 		$parle->save();
+
+		$joue = $this->getCmd(null, 'joue');
+		if (!is_object($joue)) {
+			$joue = new gcastcmd();
+			$joue->setLogicalId('joue');
+			$joue->setIsVisible(1);
+			$joue->setName(__('Joue', __FILE__));
+		}
+		$joue->setType('action');
+		$joue->setSubType('select');
+		$joue->setEqLogic_id($this->getId());
+		$cmd->setConfiguration('listValue','0|Automatique;1|Vitesse 1');
+		//$joue->setDisplay('title_disable', 1);
+		//$joue->setDisplay('message_placeholder', __('Phrase', __FILE__));
+		$joue->save();
 		
 		$volplus = $this->getCmd(null, 'volup');
 		if (!is_object($volplus)) {
@@ -112,6 +127,12 @@ class gcastCmd extends cmd {
 					$options=$gcast->getConfiguration('googlevoice','fr');
 				}
 				$cmd = '/usr/bin/python ' .dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$tts.'" "'.$jeedompath.'" ' . $options . ' ' . $moteur;
+		}else if ($action == 'joue') {
+			log::add('gcast','debug',''.print_r($_options,true));
+			$filename=$_options['select'];
+			$jeedompath=network::getNetworkAccess('internal');
+			//$cmd = '/usr/bin/python ' .dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$tts.'" "'.$jeedompath.'" ' . $options . ' ' . $moteur;
+			$cmd = 'echo '.dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$filename.'" "'.$jeedompath.'" ';
 		} else if ($action == 'volume') {
 			if ($_options['slider'] < 0) {
 				$_options['slider'] = 0;
