@@ -54,7 +54,7 @@ class gcast extends eqLogic {
 		$joue->setType('action');
 		$joue->setSubType('select');
 		$joue->setEqLogic_id($this->getId());
-		$cmd->setConfiguration('listValue','0|Automatique;1|Vitesse 1');
+		$joue->setConfiguration('listValue',"");
 		//$joue->setDisplay('title_disable', 1);
 		//$joue->setDisplay('message_placeholder', __('Phrase', __FILE__));
 		$joue->save();
@@ -128,11 +128,10 @@ class gcastCmd extends cmd {
 				}
 				$cmd = '/usr/bin/python ' .dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$tts.'" "'.$jeedompath.'" ' . $options . ' ' . $moteur;
 		}else if ($action == 'joue') {
-			log::add('gcast','debug',''.print_r($_options,true));
 			$filename=$_options['select'];
 			$jeedompath=network::getNetworkAccess('internal');
 			//$cmd = '/usr/bin/python ' .dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$tts.'" "'.$jeedompath.'" ' . $options . ' ' . $moteur;
-			$cmd = 'echo '.dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$filename.'" "'.$jeedompath.'" ';
+			$cmd = '/usr/bin/python '.dirname(__FILE__) . '/../../resources/action.py ' . $action . ' ' . $ip . ' "'.$filename.'" "'.$jeedompath.'" ';
 		} else if ($action == 'volume') {
 			if ($_options['slider'] < 0) {
 				$_options['slider'] = 0;

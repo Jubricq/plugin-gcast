@@ -3,7 +3,9 @@ if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
 $plugin = plugin::byId('gcast');
+sendVarToJS('ajaxToken', ajax::getToken() );
 sendVarToJS('eqType', $plugin->getId());
+sendVarToJS('listSound', config::byKey('listValue', 'gcast'));
 $eqLogics = eqLogic::byType($plugin->getId());
 ?>
 <div class="row row-overflow">
@@ -28,11 +30,11 @@ foreach ($eqLogics as $eqLogic) {
     <br>
     <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;;color:#94ca02">{{Ajouter}}</span>
   </div>
-  <div class="cursor" id="bt_healthgcast" style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+  <!--div class="cursor" id="bt_healthgcast" style="text-align: center; background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
       <i class="fa fa-medkit" style="font-size : 5em;color:#767676;"></i>
     <br>
     <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676">{{Santé}}</span>
-  </div>
+  </div-->
 </div>
 <legend><i class="icon techno-cable1"></i>  {{Mes gcasts}}
 </legend>
@@ -62,6 +64,7 @@ foreach ($eqLogics as $eqLogic) {
     <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
     <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
     <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
+    <li role="presentation"><a href="#soundtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-play"></i> {{Sons}}</a></li>
   </ul>
   <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
     <div role="tabpanel" class="tab-pane active" id="eqlogictab">
@@ -196,12 +199,6 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
                     		</div>
                      </div>
 	    </div>
-      <div class="form-group">
-        <label class="col-lg-3 control-label">{{Son prédéfini}}</label>
-        <div class="col-lg-3">
-            <span><?php config::byKey('listValue', 'gcast') ?></span>
-        </div>
-      </div>
     </fieldset>
   </form>
 </div>
@@ -216,6 +213,19 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 
   </tbody>
 </table>
+</div>
+<div role="tabpanel" class="tab-pane" id="soundtab">
+ <table id="table_sound" class="table table-bordered table-condensed">
+   <thead>
+    <tr>
+      <th>{{Nom}}</th><th>{{Action}}</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<a class="btn btn-default btn-xs" id="soundRecord" data-action="record" style="margin:5px">Enregister <i class="fa fa-microphone"></i></a>
+<a class="btn btn-default btn-xs" id="soundUpload" data-action="upload"  style="margin:5px" onclick="document.getElementById('soundFile').click();return false;">Uploader <i class="fa fa-arrow-up"></i></a><br/>
+<input type="file" id="soundFile" accept="audio/*" style="display:none"/>
 </div>
 </div>
 </div>

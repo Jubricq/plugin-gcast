@@ -55,7 +55,7 @@ def joue():
     # sys.argv[4] web dir
     file = sys.argv[3];
     
-    urltoplay=sys.argv[4]+'/plugins/gcast/tmp/cache/'+file+'.mp3'
+    urltoplay=sys.argv[4]+'/plugins/gcast/sound/'+file+'.mp3'
     #file = hashlib.md5(sys.argv[3]+sys.argv[5]+sys.argv[6]).hexdigest()
     filenamemp3=os.path.join(cachepath,file+'.mp3')
 
@@ -106,6 +106,11 @@ def parle():
     (out, err) = proc.communicate()
     return out
 
+def oogtomp3():
+    song = AudioSegment.from_ogg(sys.argv[2]+'.ogg')
+    song.export(sys.argv[2]+'.mp3', format="mp3", bitrate="128k", tags={'albumartist': 'Jeedom', 'title': 'Sound', 'artist':'Jeedom'}, parameters=["-ar", "44100","-vol", "200"])
+    os.remove(sys.argv[2]+'.ogg')
+
 actions = {
            "pause" : pause,
            "volup" : volup,
@@ -113,5 +118,6 @@ actions = {
            "joue" : joue,
            "parle" : parle,
            "volume" : volume,
+           "oogtomp3" : oogtomp3,
 }
 actions[sys.argv[1]]()
