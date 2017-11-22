@@ -111,6 +111,11 @@ def oogtomp3():
     song.export(sys.argv[2]+'.mp3', format="mp3", bitrate="128k", tags={'albumartist': 'Jeedom', 'title': 'Sound', 'artist':'Jeedom'}, parameters=["-ar", "44100","-vol", "200"])
     os.remove(sys.argv[2]+'.ogg')
 
+def webmtomp3():
+    song = AudioSegment.from_file(sys.argv[2]+'.webm','webm')
+    song.export(sys.argv[2]+'.mp3', format="mp3", bitrate="128k", tags={'albumartist': 'Jeedom', 'title': 'Sound', 'artist':'Jeedom'}, parameters=["-ar", "44100","-vol", "200"])
+    os.remove(sys.argv[2]+'.webm')
+
 actions = {
            "pause" : pause,
            "volup" : volup,
@@ -119,5 +124,6 @@ actions = {
            "parle" : parle,
            "volume" : volume,
            "oogtomp3" : oogtomp3,
+           "webmtomp3" : webmtomp3,
 }
 actions[sys.argv[1]]()

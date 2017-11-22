@@ -60,6 +60,8 @@ try {
 				//Do nothing
 			 }else if(strcmp($fileType, "mp3") === 0){
 				//Do nothing
+			 }else if(strcmp($fileType, "webm") === 0){
+				//Do nothing
 			 }else if(strcmp($fileType, "mpeg") === 0){
 				$fileType ="mp3";
 			 }else{
@@ -83,8 +85,12 @@ try {
 				//audio/ogg
 				if(strcmp($fileType, "ogg") === 0){
 					$cmd = '/usr/bin/python ' .dirname(__FILE__) . '/../../resources/action.py oogtomp3 ' . $dossier .  $fileId;
-					$result=shell_exec($cmd . ' > /dev/null 2>&1 &');
-					log::add('gcast', 'debug', 'Audio ogg to mp3 converted'.$result);
+					exec($cmd, $out, $ret);
+					log::add('gcast', 'debug', 'Audio ogg to mp3 converted'.$cmd.' '.$ret.'  '.print_r($out,true));
+				}else if(strcmp($fileType, "webm") === 0){
+					$cmd = '/usr/bin/python ' .dirname(__FILE__) . '/../../resources/action.py webmtomp3 ' . $dossier .  $fileId;
+					exec($cmd, $out, $ret);
+					log::add('gcast', 'debug', 'Audio webm to mp3 converted'.$cmd.' '.$ret.'  '.print_r($out,true));
 				}
 				$listValue = config::byKey('listValue', 'gcast');
 				if(! empty($listValue)){

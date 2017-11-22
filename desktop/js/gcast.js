@@ -76,7 +76,7 @@ function addSoundToTable(sound) {
     $('#table_sound tbody').append(tr);
 }
 
-$('.soundAction').live('click', function () {
+$( document ).on( "click", ".soundAction", function() {
     var snd_id = $(this).data('snd_id');
     var action = $(this).data('action');
     console.log(snd_id, action);
@@ -169,7 +169,9 @@ $('#soundRecord').on('click', function (event) {
 $('#soundFile').on('change', function (event) {
     let upFile = $("#soundFile")[0].files[0];
     console.log(upFile);
-    bootbox.prompt({title:"{{Nom du son ?}}",value:upFile.name, callback:function (result) {
+    var nametab = upFile.name.split('.');
+    nametab.pop();
+    bootbox.prompt({title:"{{Nom du son ?}}",value:nametab.join(), callback:function (result) {
         if (result !== null) {
             var fd = new FormData();
             fd.append('fdata',upFile,result);
@@ -203,18 +205,25 @@ function startRecording(stream) {
     };
     mediaRecorder.onstop = function () {
         console.log('Stopped, state = ' + mediaRecorder.state);
-
-        var blob = new Blob(chunks, {
-            type: 'audio/ogg; codecs=opus' 
-        });
+        var blob;
+        // true on chrome, false on firefox
+        if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')){
+            blob = new Blob(chunks, {
+                type: 'audio/webm;codecs=opus'
+            });
+        // false on chrome, true on firefox
+        }else if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus') ){
+            blob = new Blob(chunks, {
+                type: 'audio/ogg;codecs=opus'
+            });
+        }else{
+            console.log("MediaRecorder. no TypeSupported");
+        }
         chunks = [];
-
         var audioURL = window.URL.createObjectURL(blob);
-
         bootbox.prompt("{{Nom du son ?}}", function (result) {
             if (result !== null) {
                 var fd = new FormData();
-                //fd.append('fname', 'test.ogg');
                 fd.append('fdata', blob,result);
                 addSound(fd);
             }
