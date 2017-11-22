@@ -5,7 +5,6 @@ if (!isConnect('admin')) {
 $plugin = plugin::byId('gcast');
 sendVarToJS('ajaxToken', ajax::getToken() );
 sendVarToJS('eqType', $plugin->getId());
-sendVarToJS('listSound', config::byKey('listValue', 'gcast'));
 $eqLogics = eqLogic::byType($plugin->getId());
 ?>
 <div class="row row-overflow">

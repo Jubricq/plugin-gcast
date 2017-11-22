@@ -24,7 +24,8 @@ try {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
     
-    ajax::init();
+	ajax::init();
+	$eqLogic_id = init('eqLogic_id');
 	//$_FILES['fdata'];
 	/*
 		Le nom	$_FILES['avatar']['name']
@@ -92,13 +93,13 @@ try {
 					exec($cmd, $out, $ret);
 					log::add('gcast', 'debug', 'Audio webm to mp3 converted'.$cmd.' '.$ret.'  '.print_r($out,true));
 				}
-				$listValue = config::byKey('listValue', 'gcast');
+				$listValue = getJoueCmdListValue($eqLogic_id);
 				if(! empty($listValue)){
 					$listValue =  $listValue .';';
 				}
 				$listValue = $listValue .$fileId.'|'.$fileLabel;
 				log::add('gcast', 'debug', 'Upload effectué avec succès !'. $listValue);
-				config::save('listValue',$listValue, 'gcast');
+				saveJoueCmdListValue($eqLogic_id,$newListValue);
 				ajax::success($listValue);
 			 }
 			 else //Sinon (la fonction renvoie FALSE).
@@ -122,7 +123,7 @@ try {
 		log::add('gcast', 'debug', 'File delete path:'.$fileToDelete. '   deleted:'.$deleted);
 
 		//delete in selectable value
-		$listValue = config::byKey('listValue', 'gcast');
+		$listValue = getJoueCmdListValue($eqLogic_id);
 		$elements = explode(';',$listValue);
 		foreach ($elements as $key => $value) {
 			$coupleArray = explode('|', $value);
@@ -131,13 +132,26 @@ try {
 			}
 		}
 		$newListValue = implode(";",$elements);
-		config::save('listValue',$newListValue, 'gcast');
+		saveJoueCmdListValue($eqLogic_id,$newListValue);
 		ajax::success($newListValue);
 	}
-
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
     ajax::error(displayExeption($e), $e->getCode());
 }
+
+function getJoueCmdListValue($id){
+	$eqLogic = gcast::byId($id);
+	$cmd =  $eqLogic->getCmd(null, 'joue');
+	return $cmd->getConfiguration('listValue');
+}
+function saveJoueCmdListValue($id,$val){
+	$eqLogic = gcast::byId($id);
+	$cmd =  $eqLogic->getCmd(null, 'joue');
+	$cmd->setConfiguration('listValue',$val);
+	//$cmd->save();
+	//$cmd->doUpdate();
+}
+
 ?>

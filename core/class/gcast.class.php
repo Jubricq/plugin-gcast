@@ -55,8 +55,6 @@ class gcast extends eqLogic {
 		$joue->setSubType('select');
 		$joue->setEqLogic_id($this->getId());
 		$joue->setConfiguration('listValue',"");
-		//$joue->setDisplay('title_disable', 1);
-		//$joue->setDisplay('message_placeholder', __('Phrase', __FILE__));
 		$joue->save();
 		
 		$volplus = $this->getCmd(null, 'volup');

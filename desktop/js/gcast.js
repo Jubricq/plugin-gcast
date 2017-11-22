@@ -54,8 +54,7 @@ function addCmdToTable(_cmd) {
     $('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
     jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
-
-function printEqLogic() {
+function printSound(listSound) {
     $('#table_sound tbody').empty();
     if (listSound && listSound.length > 2) {
         listSound.split(';').map(function (soundSelect) {
@@ -65,6 +64,12 @@ function printEqLogic() {
                 label: soundTab[1]
             })
         });
+    }
+}
+function printEqLogic(data) {
+    if(data && data.cmd){
+        let soundList = data.cmd.filter(acmd => acmd.logicalId=='joue')[0].configuration.listValue;
+        printSound(soundList)
     }
 }
 
@@ -91,7 +96,8 @@ function removeSound(snd_id) {
         url: 'plugins/gcast/core/ajax/gcast.ajax.php?jeedom_token=' +ajaxToken,
         data: {
             action: "removeSound",
-            snd_id: snd_id
+            snd_id: snd_id,
+            eqLogic_id:$('.li_eqLogic.active').attr('data-eqLogic_id')            
         },
         dataType: 'json',
         error: function (request, status, error) {
@@ -102,8 +108,7 @@ function removeSound(snd_id) {
                 $('#div_alert').showAlert({message: data.result, level: 'danger'});
                 return;
             }else{
-                listSound = data.result;
-                printEqLogic();
+                printSound(data.result);
             }
             //if (data.state != 'ok') {
             //$('#div_alert').showAlert({message:  data.result,level: 'danger'});
@@ -118,10 +123,7 @@ function addSound(fd) {
     $.showLoading();
     $.ajax({ // fonction permettant de faire de l'ajax
         type: "POST", // methode de transmission des données au fichier php
-        url: 'plugins/gcast/core/ajax/gcast.ajax.php?action=addSound&jeedom_token=' +ajaxToken,
-        //data: {
-        //    action: "addSound"
-        //},
+        url: 'plugins/gcast/core/ajax/gcast.ajax.php?action=addSound&jeedom_token=' +ajaxToken+'&eqLogic_id='+$('.li_eqLogic.active').attr('data-eqLogic_id'),
         dataType: 'json',
         data: fd,
         processData: false,
@@ -137,8 +139,7 @@ function addSound(fd) {
                 $('#div_alert').showAlert({message: data.result, level: 'danger'});
                 return;
             }else{
-                listSound = data.result;
-                printEqLogic();
+                printSound(data.result);
             }
             //if (data.state != 'ok') {
             //$('#div_alert').showAlert({message:  data.result,level: 'danger'});
