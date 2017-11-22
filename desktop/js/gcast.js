@@ -75,7 +75,7 @@ function printEqLogic(data) {
 
 function addSoundToTable(sound) {
     var tr = '<tr>';
-    tr += '<td><audio controls preload="none"><source src="plugins/gcast/sound/' + sound.id + '.mp3" type="audio/mpeg" preload="none"></audio>' + sound.label + ' </td>';
+    tr += '<td><audio controls preload="none"><source src="plugins/gcast/sound/' + sound.id + '.mp3" type="audio/mpeg" preload="none"></audio> ' + sound.label + ' </td>';
     tr += '<td><a class="btn btn-default btn-xs soundAction" data-snd_id="' + sound.id + '" data-action="remove">Supprimer <i class="fa fa-minus-circle"></i></a></td>';
     tr += '</tr>';
     $('#table_sound tbody').append(tr);
@@ -151,7 +151,7 @@ function addSound(fd) {
 $('#soundRecord').on('click', function (event) {
     var action = $(this).data('action');
     if(action=='record'){
-        if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia) {
+        if (typeof MediaRecorder === 'undefined' || !navigator.getUserMedia || !MediaRecorder.isTypeSupported) {
             bootbox.alert('Sorry! This requires Firefox 30 and up or Chrome 47 and up.');
         } else {
             navigator.getUserMedia({"audio": true}
@@ -221,7 +221,8 @@ function startRecording(stream) {
             console.log("MediaRecorder. no TypeSupported");
         }
         chunks = [];
-        var audioURL = window.URL.createObjectURL(blob);
+        //var audioURL = window.URL.createObjectURL(blob);
+        stream.stop(); 
         bootbox.prompt("{{Nom du son ?}}", function (result) {
             if (result !== null) {
                 var fd = new FormData();

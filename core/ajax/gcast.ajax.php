@@ -99,7 +99,7 @@ try {
 				}
 				$listValue = $listValue .$fileId.'|'.$fileLabel;
 				log::add('gcast', 'debug', 'Upload effectué avec succès !'. $listValue);
-				saveJoueCmdListValue($eqLogic_id,$newListValue);
+				saveJoueCmdListValue($eqLogic_id,$listValue);
 				ajax::success($listValue);
 			 }
 			 else //Sinon (la fonction renvoie FALSE).
@@ -143,15 +143,15 @@ try {
 
 function getJoueCmdListValue($id){
 	$eqLogic = gcast::byId($id);
-	$cmd =  $eqLogic->getCmd(null, 'joue');
-	return $cmd->getConfiguration('listValue');
+	$cmdJoue =  $eqLogic->getCmd(null,'joue');
+	return $cmdJoue->getConfiguration('listValue');
 }
 function saveJoueCmdListValue($id,$val){
 	$eqLogic = gcast::byId($id);
-	$cmd =  $eqLogic->getCmd(null, 'joue');
-	$cmd->setConfiguration('listValue',$val);
-	//$cmd->save();
-	//$cmd->doUpdate();
+	$cmdJoue =  $eqLogic->getCmd(null,'joue');
+	$cmdJoue->setConfiguration('listValue',$val);
+	$cmdJoue->save();
+	log::add('gcast', 'debug', 'saveJoueCmdListValue:'.$val);
 }
 
 ?>
