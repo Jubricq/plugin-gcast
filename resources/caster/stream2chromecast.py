@@ -519,7 +519,7 @@ def load(cast, url, mimetype, sub=None, sub_language=None):
         
         idle = False
         while not idle:
-            time.sleep(1)
+            time.sleep(0.1)
             idle = cast.is_idle()
    
     except KeyboardInterrupt:

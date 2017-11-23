@@ -222,7 +222,6 @@ function startRecording(stream) {
         }
         chunks = [];
         //var audioURL = window.URL.createObjectURL(blob);
-        stream.stop(); 
         bootbox.prompt("{{Nom du son ?}}", function (result) {
             if (result !== null) {
                 var fd = new FormData();
