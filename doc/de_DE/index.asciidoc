@@ -1,0 +1,12 @@
+== Gcast
+
+=== Beschreibung
+Mit dem Gcast-Plugin können Sie eine Verbindung zwischen Ihrem Google-Assistenten und Jeedom herstellen. 
+Es ist möglich, mit Google-Home/Google-Mini TTS zu erstellen oder durch Interaktionen mit Jeedom zu interagieren. 
+
+'''
+=== Konfiguration
+include::configuration.asciidoc[]
+'''
+=== Änderungsprotokoll
+include::changelog.asciidoc[]
