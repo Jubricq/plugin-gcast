@@ -151,6 +151,9 @@ function saveJoueCmdListValue($id,$val){
 	$cmdJoue =  $eqLogic->getCmd(null,'joue');
 	$cmdJoue->setConfiguration('listValue',$val);
 	$cmdJoue->save();
+	cache::flush();
+	//$mc = cache::byKey('weatherWidgetmobile' . $weather->getId());
+	//$mc->remove();
 	log::add('gcast', 'debug', 'saveJoueCmdListValue:'.$val);
 }
 
